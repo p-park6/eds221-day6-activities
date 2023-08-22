@@ -1,3 +1,44 @@
----
 
----
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+
+
+
+
+```{r}
+lobsters <- read_csv(here("data","Lobster_Abundance_All_Years_20210412.csv"), na = c("-99999", "")) %>%  
+  clean_names() %>% 
+  uncount(count)
+
+```
+
+```{r}
+mean_size_count_by_site <- lobsters %>%
+  group_by(site, year) %>%
+  summarise(mean_size = mean(size_mm, na.rm = TRUE),
+            count = n())
+
+graph_size_lobster <- ggplot(data = mean_size_count_by_site, aes(x = year, y = count)) + geom_point(aes(color = site))
+graph_size_lobster
+```
+
+### create a subset from year 2020
+```{r}
+lobster_2020 <- lobsters %>% dplyr::filter(year == 2020)
+
+lobster_2020_count <- lobster_2020 %>% 
+  mutate(legal_limit = case_when(
+    size_mm >= 79.76 ~ "Legal",
+    size_mm < 79.76 ~ "Not Legal"))
+
+lobster_2020_legal <- lobster_2020_count %>% 
+  group_by(site, legal_limit) %>% 
+  summarize(count = n())
+
+legal_2020_graph <- 
+```
+
