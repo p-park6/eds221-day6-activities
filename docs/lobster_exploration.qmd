@@ -39,6 +39,90 @@ lobster_2020_legal <- lobster_2020_count %>%
   group_by(site, legal_limit) %>% 
   summarize(count = n())
 
-legal_2020_graph <- 
+legal_2020_graph <- ggplot(data = lobster_2020_legal, aes(x = site, y = count)) + geom_col(aes(fill = legal_limit), position = "fill")
+legal_2020_graph
 ```
+
+# Task 3
+```{r}
+ex_a <- lobsters %>% 
+  dplyr::filter(site %in% c("IVEE", "CARP", "NAPL"))
+ex_a
+```
+
+```{r}
+ex_b <- lobsters %>% 
+  dplyr::filter(month == 8)
+ex_b
+```
+
+```{r}
+ex_c <- lobsters %>% 
+  dplyr::filter(site == "AQUE" | size_mm > 70)
+ex_c
+```
+
+```{r}
+ex_d <- lobsters %>% 
+  dplyr::filter(site != "NAPL")
+ex_d
+```
+
+```{r}
+ex_e <- lobsters %>% 
+  group_by(site) %>% 
+  summarize(mean_length = mean(size_mm, na.rm = TRUE),
+            sd_length = sd(size_mm, na.rm = TRUE))
+ex_e
+```
+
+```{r}
+ex_f <- lobsters %>% 
+  group_by(site, month) %>% 
+  summarize(mean_length = mean(size_mm, na.rm = TRUE))
+ex_f
+```
+
+```{r}
+ex_g <- lobsters %>% 
+  mutate(size_cm = size_mm / 10)
+ex_g
+```
+
+```{r}
+ex_h <- lobsters %>% 
+  mutate(across(site, tolower))
+ex_h
+```
+
+```{r}
+ex_i <- lobsters %>% 
+  mutate(across(area, as.character))
+ex_i
+```
+
+```{r}
+ex_j <- lobsters %>% 
+  mutate(size_bin = case_when(
+    size_mm <= 70 ~ "small",
+    size_mm > 70 ~ "large"
+  ))
+ex_j
+```
+
+```{r}
+ex_k <- lobsters %>% 
+  mutate(designation = case_when(
+    site %in% c("IVEE", "NAPL") ~ "MPA",
+    TRUE ~ "not MPA"
+    #site %in% c("AQUE", "CARP", "MOHK") ~ "not MPA"
+  ))
+ex_k
+```
+
+
+
+
+
+
 
